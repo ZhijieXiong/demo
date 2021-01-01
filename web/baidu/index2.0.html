@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="UTF-8">
+		<title>百度一下，你就知道</title>
+		<style>
+			/* 通用设置 */
+			body {
+				margin: 0;
+				padding: 0;
+				font-size: 12px;
+				font-family: "PingFang SC",Arial,"Microsoft YaHei",sans-serif;
+			}
+			a {
+				color: #000;
+				text-decoration: none;
+			}
+			a:hover {
+				cursor: pointer;
+				color: #315efb;
+			}
+
+
+			/* 导航栏 */
+			/* 导航栏左右结构设置 */
+			nav {
+				display: flex;
+				justify-content: space-between;
+			}
+			/* 左边导航栏设置 */
+			.nav-left {
+				padding-left: 24px;
+				height: 60px;
+				line-height: 60px;
+			}
+			.nav-left > a {
+				margin-right: 31px;
+			}
+			/* 右边导航栏设置 */
+			.nav-right {
+				padding-right: 24px;
+				height: 60px;
+				line-height: 60px;
+			}
+			.nav-right > a {
+				margin-left: 32px;
+			}
+			/* “登录”按钮设置 */
+			.login {
+				background: #4e71f2;
+				padding: 4px 10px;
+				border-radius: 6px;
+				color: white;
+			}
+			.login:hover {
+				color: white;
+			}
+			/* “更多”和“设置”弹出菜单 */
+			.more, .setting {
+				padding-bottom: 50px; /* 加点空白，否则鼠标移动到菜单本体时，菜单会消失 */
+				position: relative;
+			}
+			.more-menu, .setting-menu {
+				display: none;
+				background: white;
+				box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.15);
+				text-align: center;
+			}
+			/* “更多”的弹出菜单设置 */
+			/* 使用的flex弹性盒子 */
+			.more:hover .more-menu{
+				display: flex;
+				flex-wrap: wrap;
+				width: 304px;
+				border-radius: 12px;
+				position: absolute;
+				top: 30px;
+				left: -270px;
+				color: #000;
+			}
+			.more-menu-content img {
+				height: 44px;
+				width: 44px;
+				border: 1px solid rgba(0, 0, 0, 0.03);
+				margin-top: 19px;
+				margin-left: 15px;
+				margin-right: 15px;
+				border-radius: 12px;
+			}
+			.more-menu-content span {
+				width: 76px;
+				height: 23px;
+				margin-top: 3px;
+				line-height: 23px;
+			}
+			/* ”查看全部百度产品“设置 */
+			.view-all {
+				display: inline-block;
+				height: 23px;
+				line-height: 23px;
+				padding: 10px 0;
+				width: 100%;
+				color: #9195a3;
+			}
+			.view-all:hover {
+				cursor: pointer;
+				color: #315efb; 
+			}
+			/* 图片和文字的盒子也是用的flex弹性盒子 */
+			.more-menu-content {
+				display: flex;
+				flex-direction: column;
+			}
+			.more-menu-content:hover {
+				color: #315efb;
+			}
+			/* “设置”的弹出菜单设置 */
+			/* 使用的flex弹性盒子 */
+			.setting:hover .setting-menu{
+				display: flex;
+				flex-direction: column;
+				width: 84px;
+				position: absolute;
+				top: 30px;
+				left: -30px;
+				border-radius: 12px;
+				color: #000;
+			}
+			.setting-menu div {
+				height: 29px;
+				line-height: 29px;
+				padding: 3px 0;
+			}
+			.setting-menu div:hover {
+				color: #315efb;
+			}
+
+			
+			/* 主要内容（整体框架均使用flex弹性盒子） */
+			/* main使用的也是flex弹性盒子 */
+			main {
+				display: flex;
+				flex-direction: column;
+			}
+			/* logo图片设置 */
+			.logo-box {
+				text-align: center;
+			}
+			.logo-box img {
+				width: 220px;
+				height: 70px;
+				padding-top: 30px;
+				padding-bottom: 20px;
+			}
+			/* 搜索框设置 */
+			.input-box {
+				display: flex;
+				justify-content: center;
+			}
+			.input-box input {
+				width: 548px;
+				height: 40px;
+				padding: 0;
+				border: 2px solid #C4C6CE;
+				border-radius: 10px 0 0 10px;
+				border-right: 0;
+				outline: none;
+			}
+			.input-box input:hover {
+				border-color: #a7aab5;
+			}
+			.input-box input:focus {
+				border: 2px solid #4e6ef2;
+			}
+			/* “百度一下”按钮设置 */
+			.input-box button {
+				border: 0;  /* 清除边框 */
+				border-radius: 0 10px 10px 0;
+				width: 108px;
+				height: 44px;
+				background: #4e6ef2;
+				color: white;
+				font-size: 17px;
+			}
+			.input-box button:hover {
+				cursor: pointer;
+				background-color: #4662d9;
+
+			}
+			/* 新闻设置 */
+			.news-box {
+				margin-top: 40px;
+			}
+			/* “百度热榜”和换一换 */
+			.special-title {
+				width: 654px;
+				margin: 0 auto;
+				margin-bottom: 8px; 
+				display: flex;
+				justify-content: space-between;
+				font-size: 14px;
+			}
+			.hot-list:hover {
+				cursor: pointer;
+			}
+			.change {
+				color: gray;
+			}
+			.change:hover {
+				cursor: pointer;
+				color: #315efb;
+			}
+			/* 热搜内容 */
+			.news {
+				display: flex;
+				flex-direction: row;
+				justify-content: space-between;
+				width: 654px;
+				margin: 0 auto;
+				font-size: 14px;
+			}
+			.news-content {
+				height: 34px;
+				line-height: 34px;
+			}
+			.news-content:hover {
+				cursor: pointer;
+				color: #315efb;
+			}
+			.order-img {
+				display: inline-block;
+				width: 20px;
+				height: 20px;
+				line-height: 20px;
+				text-align: center;
+			}
+			.top-1 {
+				background: url("https://dss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superman/img/hot_search/top_1@1x-d1e660cf3b.png");
+				color: white;
+				font-size: 12px;
+			}
+			.top-2 {
+				background: url("https://dss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superman/img/hot_search/top_2@1x-50e9c7fdf4.png");
+				color: white;
+				font-size: 12px;
+			}
+			.top-3 {
+				background: url("https://dss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superman/img/hot_search/top_3@1x-676616abe1.png");
+				color: white;
+				font-size: 12px;
+			}
+			.top-remainder {
+				background: url("https://dss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superman/img/hot_search/top_4@1x-8cffd4622f.png");
+				color: #9195a3;
+				font-size: 12px;
+			}
+
+			
+			/* 二维码设置 */
+			.qrcode {
+				position: absolute;
+				right: 25px;
+				bottom: 58px;
+				width: 44px;
+				height: 44px;
+				text-align: center;
+				line-height: 44px;
+				border-radius: 50%;
+				background-color: #f5f5f5;
+			}
+			.qrcode:hover {
+				cursor: pointer;
+				box-shadow: 0 3px 5px 0 rgba(0,0,0,.1);
+			}
+			.qrcode > img {
+				position: absolute;
+				top: 25%;
+				left: 25%;
+				width: 20px;
+				height: 20px;
+				opacity: 0.5;
+			}
+			/* 二维码弹框设置 */
+			.qrcode-more {
+				display: none; 
+				background: white;
+				position: absolute;
+				box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.15);
+				text-align: center;
+				border-radius: 12px;
+			}
+			.qrcode:hover .qrcode-more {
+				display: flex;
+				justify-content: space-around;	
+				align-items: center;		
+				width: 300px;
+				height: 107px;
+				right: 40px;
+				bottom: 0;
+				cursor: default;
+			}
+			.qrcode-more-left {
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				text-align: left;
+			}
+			.scan-code-hint {
+				font-size: 18px;
+			}
+
+			.purpose-hint {
+				color: #9195a3;
+				font-size: 16px;
+			}
+			.full-code {
+				width: 75px;
+				height: 75px;
+			}
+
+
+			/* 脚注设置 */
+			footer {
+				position: absolute;
+				bottom: 0;
+				background-color: #fbfbfb;
+				width: 100%;
+				height: 40px;
+				line-height: 40px;
+				font-size: 12px;
+			}
+			footer a, .footer-right-content {
+				color: #9195a3;
+				margin-right: 16px; 
+			}
+			footer a:hover {
+				cursor: pointer;
+				color: #222;
+			}
+			.footer-left a:first-child {
+				margin-left: 24px;
+			}
+			.footer-right {
+				float: right;
+			}
+			.footer-right a:last-child {
+				margin-right: 24px;
+			}
+		</style>
+	</head>
+
+	<body>
+<!-- ********************导航栏******************** -->
+		<nav>
+			<div class="nav-left">
+				<a href="www.baidu.com">新闻</a>
+				<a href="www.baidu.com">hao123</a>
+				<a href="www.baidu.com">地图</a>
+				<a href="www.baidu.com">视频</a>
+				<a href="www.baidu.com">贴吧</a>
+				<a href="www.baidu.com">学术</a>
+				<a class="more" href="www.baidu.com">
+					更多
+					<div class="more-menu">
+						<span class="more-menu-content">
+							<img src="./img1.png" alt="图片1">	
+							<span>网盘</span>
+						</span>
+						<span class="more-menu-content">
+							<img src="./img5.png" alt="图片1">	
+							<span>知道</span>
+						</span>
+						<span class="more-menu-content">
+							<img src="./img6.png" alt="图片1">	
+							<span>百科</span>
+						</span>
+						<span class="more-menu-content">
+							<img src="./img2.png" alt="图片2">
+							<span>图片</span>
+						</span>
+						<span class="more-menu-content">
+							<img src="./img7.png" alt="图片1">	
+							<span>宝宝知道</span>
+						</span>
+						<span class="more-menu-content">
+							<img src="./img3.png" alt="图片3">
+							<span>文库</span>
+						</span>
+						<span class="more-menu-content">
+							<img src="./img4.png" alt="图片4">
+							<span>经验</span>
+						</span>
+						<span class="more-menu-content">
+							<img src="./img8.png" alt="图片1">	
+							<span>音乐</span>
+						</span>
+						<span class="view-all">查看全部百度产品 ></span>
+					</div>
+				</a>
+			</div>
+
+			<div class="nav-right">
+				<a href="www.baidu.com" style="color: red;">高考加油</a>
+				<a class="setting">
+					设置
+					<div class="setting-menu">
+						<div>搜索设置</div>
+						<div>高级设置</div>
+						<div>隐私设置</div>
+						<div>关闭热榜</div>
+					</div>
+				</a>
+				<a class="login" href="www.baidu.com">登录</a>
+			</div>
+		</nav>
+
+<!-- ********************主要内容******************** -->
+		<main>
+			<div class="logo-box">
+				<img class="logo" src="./baidu.png" alt="百度logo">
+			</div>
+
+			<div class="input-box">
+				<input type="text">
+				<button>百度一下</button>
+			</div>
+
+			<div class="news-box">
+				<div class="special-title">
+					<div class="hot-list">百度热榜</div>
+					<div class="change">换一换</div>
+				</div>
+
+				<div class="news">
+					<div class="news-column">
+						<div class="news-content">
+							<span class="order-img top-1">1</span>  特朗普将禁止TikTok在美国运营
+						</div>
+						<div class="news-content">
+							<span class="order-img top-2">2</span>  加称美国引渡孟晚舟要求已满足
+						</div>
+						<div class="news-content">
+							<span class="order-img top-3">3</span>  大连体育老师设计核酸检测函数表
+						</div>
+					</div>
+
+					<div class="news-column">
+						<div class="news-content">
+							<span class="order-img top-remainder">4</span>  渡边杏东出昌大离婚
+						</div>
+						<div class="news-content">
+							<span class="order-img top-remainder">5</span>  公交司机买500个哆啦A梦装扮车厢
+						</div>
+						<div class="news-content">
+							<span class="order-img top-remainder">6</span>  直击2020ChinaJoy
+						</div>
+					</div>
+				</div>
+			</div>
+		</main>
+
+
+<!-- ********************浮动的二维码******************** -->
+		
+		<div class="qrcode">
+			<img src="./qrcode.png" alt="二维码">
+			<div class="qrcode-more">
+				<div class="qrcode-more-left">
+					<div class="scan-code-hint">百度APP扫码登录</div>
+					<div class="purpose-hint">有事搜一搜 没事看一看</div>
+				</div>
+				<img class="full-code" src="./qrcode.png" alt="二维码">
+			</div>
+		</div>
+
+
+
+<!-- ********************脚注******************** -->
+		<footer>
+			<div>
+				<span class="footer-left">
+					<a href="www.baidu.com">设为首页</a>
+					<a href="www.baidu.com">关于百度</a>
+					<a href="www.baidu.com">About Baidu</a>
+					<a href="www.baidu.com">百度营销</a>
+					<a href="www.baidu.com">使用百度前必读</a>
+					<a href="www.baidu.com">意见反馈</a>
+					<a href="www.baidu.com">帮助中心</a>
+				</span>
+				<span class="footer-right">
+					<span class="footer-right-content">©2020 Baidu</span>
+					<span class="footer-right-content">(京)-经营性-2017-0020</span>
+					<a href="www.baidu.com">京公网安备11000002000001号</a>
+					<span class="footer-right-content">京ICP证030173号</span>
+				</span>
+			</div>
+		</footer>
+
+
+	</body>
+</html>

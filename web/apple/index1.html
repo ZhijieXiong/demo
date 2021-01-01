@@ -1,0 +1,520 @@
+<!doctype html>
+<html lang="zh-hans">
+	<head>
+		<meta charset="utf-8" />
+		<title>官方Apple支持</title>
+		<!-- 该元标签是让浏览器缩放网页（即使像素大小（移动端:电脑端）的比例1:1），因为我们做的是响应式的网页 -->
+		<!-- 宽度为设备的宽度，初始的缩放比例为1:1，viewport-fit不知道什么意思-->
+		<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+		<style>
+			/* 通用设置 */
+			* {
+				margin: 0;
+			}
+
+			a {
+				text-decoration: none;
+			}
+
+			a:hover {
+				cursor: pointer;
+			}
+
+			/* 导航栏 */
+			nav {
+				background-color: rgb(0, 0, 0, 0.8);
+				display: flex;
+				justify-content: center;
+				font-size: 14px;
+			}
+			.nav-container {
+				width: 1000px;
+				display: flex;
+				justify-content: space-between;
+			}
+			nav a {
+				color: #f5f5f7;
+				opacity: 0.8;
+				height: 44px;
+				line-height: 44px;
+				padding: 0 10px;
+			}
+			nav a:hover {
+				opacity: 1;
+				transition: 0.5s;
+			}
+			nav img {
+				background-size: 18px 88px;
+				background-repeat: no-repeat;
+				width: 18px;
+			}
+			/* 窄导航栏 */
+			nav.narrow {
+				display: flex;
+				justify-content: space-between;
+			}
+			nav.narrow .menu-icon {
+				height: 26px;
+				position: relative;
+				margin-top: 18px;
+			}
+			/* 动画效果 */
+			nav.narrow .bar {
+				display: block;
+				width: 15px;
+				border-bottom: 1px solid grey;
+				transform-origin: 18% 50%;
+				transition: transform 1s;
+			}
+			nav.narrow .upper-bar {
+				position: relative;
+			}
+			.active .upper-bar {
+				transform: rotate(45deg);
+			}
+			nav.narrow .lower-bar {
+				position: relative;
+				top: 6px;
+			}
+			.active .lower-bar {
+				transform: rotate(-45deg);
+			}
+			/* 弹出效果 */
+			.menu-body {
+				position: absolute;
+				width: 100vw;  /* viewpoint width */
+				height: 0;
+				overflow: hidden;
+				background-color: black;
+
+				top: 26px;
+				left: 0;
+
+				transition: height 1s;
+			}
+			.active .menu-body {
+				height: 100vh;  /* viewpoint height */
+			}
+
+
+			/* 下面是响应式网页的做法（重点） */
+			/* 1、当不满足下面那个条件时，采用这个样式 */
+			nav.narrow {
+				display: none;
+			}
+			nav.wide {
+				display: flex;
+			}
+			/* 2、假设媒介为屏幕，且宽度不超过500px时，采用这个样式 */
+			@media only screen and (max-width: 700px) {
+				nav.narrow {
+					display: flex;
+				}
+				nav.wide {
+					display: none;
+				}
+			}
+
+
+			/* 背景图的设置 */
+			.welcome {
+				height: 628px;
+				background: url("https://support.apple.com/content/dam/edam/applecare/images/en_US/homepage/hero-banner-homepage.image.large_2x.jpg");
+				background-size: cover;
+				background-position: 50% 50%;  /* 这一句作用是选定背景图的中心点作为缩放的参考点 */
+				/* 
+					background-position作用是选定一个点，让该点不会随着浏览器缩放而移动，而这个点是浏览器缩放时，背景图片缩放的中心点，background-position的两个参数用于设置缩放点的“坐标”（该点距离图片上边界的距离和距离图片左边界的距离）；不设置这个属性的话，默认以背景图片左上角为缩放参考点
+				 */
+			}
+			.welcome-container {
+				position: relative;
+				top: 133px;
+			}
+			.welcome-content {
+				display: flex;
+				flex-direction: column;
+				justify-content: flex-end;
+				align-items: center;
+			}
+			@media only screen and (max-width: 700px) {
+				.welcome {
+					height: 326px;
+					margin-bottom: 200px;  /* 把搜索框的内容顶下去 */
+				}
+				.welcome-content {
+					position: relative;
+					top: 250px;
+				}
+			}
+
+
+			/* 搜索框的设置 */
+			.welcome-content h1 {
+				font-size: 48px;
+				color: #333;
+				margin: 20px 0;
+			}
+			.welcome-content input {
+				height: 50px;
+				width: 567px;
+				border: 1px solid #dedede;
+				padding-left: 50px;
+				padding-right: 35px;
+				border-radius: 3px;
+			}
+			@media only screen and (max-width: 700px) {
+				.welcome-content h1 {
+					font-size: 31px;
+				}
+				.welcome-content input {
+					width: 390px;
+					height: 38px;
+					padding-left: 40px;
+					padding-right: 35px;
+				}
+			}
+
+			
+			/* 产品图的设置 */
+			.products {
+				display: flex;
+				flex-direction: row;
+				flex-wrap: wrap;  /* 自动断行 */
+				width: 80%;
+				margin: 0 auto;
+			}
+			.product-item {
+				width: 16%;
+				display: flex;
+				align-items: center;
+				flex-direction: column;
+			}
+
+
+			
+
+		</style>
+	</head>
+	<body>
+		<!-- 导航栏 -->
+		<!-- 宽的导航栏 -->
+		<nav class="wide">
+			<div class="nav-container">
+				<a><img src="https://www.apple.com/ac/globalnav/5/zh_CN/images/globalnav/apple/image_large.svg"/></a>
+				<a>Mac</a>
+				<a>iPad</a>
+				<a>iPhone</a>
+				<a>Watch</a>
+				<a>Music</a>
+				<a href="#">技术支持</a>	
+				<a><img src=""/></a>
+				<a><img src="https://www.apple.com/ac/globalnav/5/zh_CN/images/globalnav/bag/image_large.svg"/></a>
+			</div>
+		</nav>
+		<!-- 窄 -->
+		<nav class="narrow">
+			<a class="menu-icon">
+				<span class="bar upper-bar"></span>
+				<span class="bar lower-bar"></span>
+				<div class="menu-body">
+					<input type="text">
+					<ul>
+						<li>Mac</li>
+						<li>iPad</li>
+						<li>iPhone</li>
+						<li>Watch</li>
+						<li>Music</li>
+						<li>技术支持</li>
+					</ul>
+				</div>
+			</a>
+			<script>
+				const menuIcon = document.querySelector(".menu-icon");
+		        menuIcon.onclick = () => {
+		            menuIcon.classList.toggle("active");
+		        };
+			</script>
+			<a href="">apple</a>
+			<a href="">shop</a>
+		</nav>
+
+
+
+		<!-- 主体 -->
+		<main>
+			<!-- 搜索框 -->
+			<section class="welcome">
+				<div class="welcome-container">
+					<section class="welcome-content">
+						<h1>欢迎使用 Apple 支持</h1>
+						<input type="text">
+					</section>	
+				</div>
+			</section>
+
+			<!-- 产品图 -->
+			<section class="products">
+				<a class="product-item">
+					<img
+						src="https://support.apple.com/content/dam/edam/applecare/images/en_US/homepage/homepage_productnav_iphone_2x.png"
+					/>
+					iPhone
+				</a>
+
+				<a class="product-item">
+					<img
+						src="https://support.apple.com/content/dam/edam/applecare/images/en_US/homepage/homepage_productnav_imac_2x.png"
+					/>
+					Mac					
+				</a>
+
+
+				<a class="product-item">
+					<img
+						src="https://support.apple.com/content/dam/edam/applecare/images/en_US/homepage/homepage_productnav_ipad_2x.png"
+					/>
+					iPad					
+				</a>
+
+				<a class="product-item">
+					<img
+						src="https://support.apple.com/content/dam/edam/applecare/images/en_US/homepage/homepage_productnav_apple_watch_2x.png"
+					/>
+					Watch					
+				</a>
+
+				<a class="product-item">
+					<img
+						src="https://support.apple.com/content/dam/edam/applecare/images/en_US/homepage/homepage_productdrawer_applemusic_2x.png"
+					/>
+					音乐					
+				</a>
+
+				<a class="product-item">
+					<img
+						src="https://support.apple.com/content/dam/edam/applecare/images/en_US/homepage/homepage_productnav_apple-id_2x.png"
+					/>
+					Apple ID					
+				</a>
+
+				<a class="product-item">
+					<img
+						src="https://support.apple.com/content/dam/edam/applecare/images/en_US/airpods/homepage_productdrawer_airpods_2x.png"
+					/>
+					AirPods					
+				</a>
+
+				<a class="product-item">
+					<img
+						src="https://support.apple.com/content/dam/edam/applecare/images/en_US/mac_apps/homepage_productdrawer_appstore_2x.png"
+					/>
+					App Store					
+				</a>
+
+				<a class="product-item">
+					<img
+						src="https://support.apple.com/content/dam/edam/applecare/images/en_US/homepage/homepage_productdrawer_icloud_2x.png"
+					/>
+					iCloud（由云上贵州运营）					
+				</a>
+
+				<a class="product-item">
+					<img
+						src="https://support.apple.com/content/dam/edam/applecare/images/en_US/homepage/homepage_productdrawer_apple_pay_icon_2x.png"
+					/>
+					Apple Pay					
+				</a>
+
+				<a class="product-item">
+					<img
+						src="https://support.apple.com/content/dam/edam/applecare/images/en_US/homepage/homepage_productdrawer_pro_apps_2x.png"
+					/>
+					专业应用					
+				</a>
+
+				<a class="product-item">
+					<img
+						src="https://support.apple.com/content/dam/edam/applecare/images/en_US/homepage/homepage-productnav-macos_2x.png"
+					/>
+					macOS					
+				</a>									
+			</section>
+
+			<section class="siri">
+				<h1>我可以让 Siri 做什么？</h1>
+				<img
+					src="https://support.apple.com/content/dam/edam/applecare/images/en_US/psp/featured-section-promo-siri-icon_2x.png"
+				/>
+				<a class="direct-page">了解您可以让 Siri 完成哪些操作</a>
+			</section>
+
+			<section class="trade-in">
+				<h1>通过 Apple 换购计划进行折抵换购</h1>
+				<img
+					src="https://support.apple.com/content/dam/edam/applecare/images/en_US/homepage/banner-hero-giveback-support.image.large_2x.jpg"
+				/>
+				<p>用符合条件的设备以旧换新，获得换购优惠，或者我们免费为您进行回收处理。Apple 折抵换购对您和地球均有裨益。</p>
+				<a class="direct-page">进一步了解</a>
+			</section>
+
+			<section class="getting-help">
+				<div>
+					<h1>有问题？</h1>
+					<img
+						src="https://support.apple.com/content/dam/edam/applecare/images/en_US/repair/contentlink-communities_2x.png"
+					/>
+					<p>问问大家。我们的 Apple 支持社区可以协助您找到答案。</p>
+					<a class="direct-page">在社区提问</a>
+				</div>
+				<div>
+					<h1>如何获取使用妙招？</h1>
+					<img
+						src="https://support.apple.com/content/dam/edam/applecare/images/en_US/homepage/artcol-contentlink-weibo_2x.jpg"
+					/>
+					<p>我们会分享各种实用信息和使用技巧，并提供在线协助，让一切更加得心应手。</p>
+					<a class="direct-page">关注 @Apple支持</a>
+				</div>
+				<div>
+					<h1>告诉我们您需要哪方面的协助</h1>
+					<img
+						src="https://support.apple.com/content/dam/edam/applecare/images/zh_CN/repair/artcol-contentlink-expert_2x.png"
+					/>
+					<p>请回答几个问题，我们会协助您找到解决方案。</p>
+					<a class="direct-page">获得支持</a>
+				</div>			
+				<div>
+			</section>
+
+			<section class="expert-support">
+				<h1>来自 Apple 专家的服务与支持</h1>
+				<img
+					src="https://support.apple.com/content/dam/edam/applecare/images/en_US/repair/applecare-products_2x.png"
+				/>
+				<p>AppleCare 产品提供来自 Apple 的额外硬件服务选项和专家技术支持。</p>
+				<a class="direct-page">了解 AppleCare 计划</a>
+			</section>
+
+			<section class="fixing">
+				<div>
+					<h1>让我们修好您的设备</h1>
+					<img
+						src="https://support.apple.com/content/dam/edam/applecare/images/en_US/repair/psp-repair_2x.png"
+					/>
+					<a class="direct-page">选择维修选项</a>				
+				</div>
+				<div>
+					<h2>留心假冒部件</h2>
+					<p>
+						某些假冒和第三方的电源适配器及电池可能设计不当，有可能会导致安全问题。为了确保您在电池更换时能够获得正品 Apple 电池，我们建议您前往 <a>Apple Store 商店</a>或 <a>Apple 授权服务提供商</a>处。如果您需要更换一个新的适配器来为您的 Apple 设备充电，我们建议您选择 Apple 的电源适配器。
+					</p>
+					<p>
+						此外，非正品显示屏更换件可能会使画质受损，并且可能无法正常工作。Apple 认证屏幕维修由可信赖的专家进行，他们会使用 Apple 正品部件。
+					</p>
+				</div>
+			</section>
+
+			<section class="information">
+				<div class="protecting-apple-id">
+					<h2>保护 Apple ID 帐户的技巧</h2>
+					<p>这里有一些实用技巧，可帮助您确保 Apple ID 和帐户信息的安全。</p>
+					<a class="direct-page">获取有关保护 Apple ID 帐户的支持</a>
+					<img src="https://support.apple.com/content/dam/edam/applecare/images/en_US/homepage/featured-content-security_2x.png" />
+				</div>
+				<div class="maintainence-policy">
+					<h2>了解 Apple 在中国大陆的服务和保修政策</h2>
+					<a class="direct-page">了解保修和服务选项</a>
+				</div>
+				<div class="unexpected-shutdown">
+					<h2>有关 iPhone 及意外关机的信息</h2>
+					<a class="direct-page">进一步了解</a>
+				</div>
+				<div class="maintainence-extension-plans">
+					<h3>更换和维修扩展计划</h3>
+					<ul>
+						<li><a>适用于黑屏问题的 iPad Air（第 3 代）服务计划</a></li>
+						<li><a>适用于 iPhone XS、iPhone XS Max 和 iPhone XR 的智能电池壳更换计划</a></li>
+						<li><a>针对“无法开机”问题的 iPhone 6s 和 iPhone 6s Plus 服务计划</a></li>
+						<li><a>Apple Watch Series 2 和 Series 3 铝金属表款屏幕更换计划</a></li>
+						<li><a>15 英寸 MacBook Pro 电池召回计划</a></li>
+						<li><a>适用于 MacBook、MacBook Air 和 MacBook Pro 的键盘服务计划</a></li>
+						<li><a>13 英寸 MacBook Pro 显示屏背光服务计划</a></li>
+						<li><a>Apple 三插交流电源插头转换器召回计划</a></li>
+						<li><a>13 英寸 MacBook Pro（无触控栏）固态硬盘服务计划</a></li>
+						<li><a>适用于触控问题的 iPhone X 显示屏模块更换计划</a></li>
+						<li><a>iPhone 8 主板更换计划</a></li>
+						<li><a>13 英寸 MacBook Pro（无触控栏）电池更换计划</a></li>
+						<li><a>适用于“无服务”问题的 iPhone 7 维修计划</a></li>
+						<li><a>iPhone 6s 意外关机问题计划</a></li>
+						<li><a>适用于 iPhone 6 Plus 的 Multi-Touch 维修计划</a></li>
+						<li><a>Apple 交流电源插头转换器更换计划</a></li>
+						<li><a>Beats Pill XL 扬声器召回计划</a></li>
+						<li><a>所有计划</a></li>
+					</ul>
+				</div>
+			</section>
+		</main>
+		
+		<footer>
+			<div class="breadcumb">
+				支持
+			</div>
+			<div class="sections">
+				<section class="getting-support">
+					<h4>获得支持</h4>
+					<ul>
+						<li><a>iPhone</a></li>
+						<li><a>iPad</a></li>
+						<li><a>Apple Watch</a></li>
+						<li><a>Mac</a></li>
+						<li><a>Music</a></li>
+						<li><a>Apple ID</a></li>
+						<li><a>应用</a></li>
+						<li><a>支持站点地图</a></li>
+					</ul>
+				</section>
+				<section class="service-maintainence">
+					<h4>服务与维修</h4>
+					<ul>
+						<li><a>Apple 维修选项</a></li>
+						<li><a>服务和维修信息</a></li>
+						<li><a>AppleCare 产品</a></li>
+						<li><a>硬件保修</a></li>
+						<li><a>软件许可协议</a></li>
+						<li><a>免费提供的支持</a></li>
+					</ul>
+				</section>
+				<section class="resources">
+					<h4>服务与维修</h4>
+					<ul>
+						<li><a>下载与更新</a></li>
+						<li><a>手册</a></li>
+						<li><a>技术规格</a></li>
+						<li><a>辅助功能</a></li>
+						<li><a>教育</a></li>
+						<li><a>商务</a></li>
+					</ul>
+				</section>	
+				<section class="Connect">
+					<h4>Connect</h4>
+					<ul>
+						<li><a>联系我们</a></li>
+						<li><a>电话号码</a></li>
+						<li><a>我的支持</a></li>
+						<li><a>“Apple 支持”应用</a></li>
+						<li><a>Apple 支持社区</a></li>
+					</ul>
+				</section>				
+			</div>
+			<div class="legal">
+				<div class="copyright-notice">Copyright © 2020 Apple Inc. 保留所有权利。</div>
+				<div class="additional-info">
+					<a>隐私政策</a>
+					<a>使用条款</a>
+					<a>销售和退款</a>
+					<a>站点地图</a>
+				</div>
+			</div>
+		</footer>
+
+	</body>
+</html>

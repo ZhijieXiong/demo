@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="UTF-8">
+		<title>百度一下，你就知道</title>
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+			}
+
+			a {
+				text-decoration: none;
+			}
+
+			a:hover {
+				color: blue;
+				cursor: pointer;
+			}
+
+/* --------------------设置nav-------------------- */
+			nav {
+				font-size: 13px;
+				font-family: "PingFang SC", Arial, "Microsoft YaHei", sans-serif;
+			}
+
+			.nav-left {
+				width: 415px;
+				height: 60px;
+				line-height: 60px;
+				padding-left: 24px 
+			}
+
+			.nav-right {
+				width: 222px;
+				height: 60px;
+				line-height: 60px;
+				padding-right: 24px;
+				float: right;
+			}
+
+			nav a {
+				color: #000;
+				display: inline-block;
+				margin-right: 25px;
+			}
+
+			.more {
+				position: relative;
+			}
+
+			.more-menu {
+				display: none;
+			}
+
+			.more:hover .more-menu {
+				display: block;
+				position: absolute;
+				width: 110px;
+				left: -50px;
+				border: 1px solid black;
+				border-radius: 15%;
+				box-shadow:0 0 5px blue;
+			}
+
+			.more:hover .more-menu img {
+				position: relative;
+				top: 9px;
+				left: 6px;
+				width: 44px;
+				height: 44px;
+				border: 1px solid gray;
+				border-radius: 50%;
+			}
+			
+			.setting {
+				position: relative;
+			}
+
+			.setting-menu {
+				display: none;
+			}
+
+			.setting:hover .setting-menu {
+				display: block;
+				position: absolute;  
+				top: 40px;
+				left: -120%;
+				text-align: center;
+				width: 84px;
+				height: 29px;
+				line-height: 29px;
+				color: black;
+			}
+
+
+/* --------------------设置main-------------------- */
+			main {
+				text-align: center;
+			}
+
+	/* --------------------设置logo-------------------- */
+			.logo {
+				width: 270px;
+				height: 129px;
+			}
+	
+	/* --------------------设置搜索框-------------------- */
+			.input-box {
+				display: flex;
+				flex-direction: row;
+				justify-content: center;
+			}
+
+			.input-box input {
+				padding: 12px 78px 12px 16px;
+				width: 450px;
+				height: 16px;
+			}
+
+			.input-box button {
+				width: 108px;
+				height: 46px;
+				background-color: #4e6ef2;
+				color: white;
+				font-size: 17px;
+				border-radius: 0 15% 15% 0;
+			}
+
+			.input-box button:hover {
+				cursor: pointer;
+				background-color: #4662d9;
+			}
+
+	/* --------------------设置news相关-------------------- */
+			.news-box {
+				font-size: 14px;
+			}
+
+			.news, .special-title {
+				display: flex;
+				flex-direction: row;
+				justify-content: center;
+			}
+
+			.special-title div{
+				margin: 30px 280px 10px 280px;
+			}
+
+			.news-column {
+				text-align: left;
+				margin: 0 105px;
+			}
+
+			.news-column div {
+				margin: 5px auto;
+			}
+			
+			.news-column  div:hover {
+				color: blue;
+				cursor: pointer;
+			}
+
+
+/* --------------------设置footer-------------------- */
+			footer {
+				font-size: 13px;
+				font-family: "PingFang SC", Arial, "Microsoft YaHei", sans-serif;
+			}
+
+			.footer-left {
+				height: 40px;
+				line-height: 40px;
+				position: absolute;
+				bottom: 0;
+				left: 0;
+			}
+
+			.footer-right {
+				height: 40px;
+				line-height: 40px;
+				position: absolute;
+				bottom: 0;
+				right: 0;
+			}
+
+			footer a {
+				color: gray;
+				margin: 0 12px;
+			}
+
+/* --------------------设置二维码--------------------*/
+			.qrcode {
+				position: absolute;
+				right: 50px;
+				bottom: 50px; 
+				width: 44px;
+				height: 44px;
+				border-radius: 50%;
+				border: 1px solid gray;
+				box-shadow: 0 0 2px gray;
+			}
+
+			.qrcode:hover {
+				cursor: pointer;
+				transform: scale(1.2);
+			}
+
+			.qrcode img {
+				position: absolute;
+				top: 25%;
+				left: 25%;
+				width: 24px;
+				height: 24px;
+			}
+		</style>
+	</head>
+
+
+	<body>
+<!-- ********************导航栏******************** -->
+		<nav>
+			<span class="nav-left">
+				<a href="www.baidu.com">新闻</a>
+				<a href="www.baidu.com">hao123</a>
+				<a href="www.baidu.com">地图</a>
+				<a href="www.baidu.com">视频</a>
+				<a href="www.baidu.com">贴吧</a>
+				<a href="www.baidu.com">学术</a>
+				<a class="more" href="www.baidu.com">
+					更多
+					<div class="more-menu">
+						<span>
+							<img src="./img1.png" alt="图片1">	
+							<!-- 网盘 -->
+						</span>
+						<span>
+							<img src="./img2.png" alt="图片2">
+							<!-- 图片 -->
+						</span>
+						<span>
+							<img src="./img3.png" alt="图片3">
+							<!-- 文库 -->
+						</span>
+						<span>
+							<img src="./img4.png" alt="图片4">
+							<!-- 经验 -->
+						</span>
+
+					</div>
+				</a>
+			</span>
+
+			<span class="nav-right">
+				<a href="www.baidu.com" style="color: red;">高考加油</a>
+				<a class="setting">
+					设置
+					<div class="setting-menu">
+						<div>搜索设置</div>
+						<div>高级设置</div>
+						<div>隐私设置</div>
+						<div>关闭热榜</div>
+					</div>
+				</a>
+				<a class="login" href="www.baidu.com"><span>登入</span></a>
+			</span>
+		</nav>
+
+<!-- ********************主要内容******************** -->
+		<main>
+			<div class="logo-box">
+				<img class="logo" src="./baidu.jpg" alt="百度logo">
+			</div>
+
+			<div class="input-box">
+				<input type="text">
+				<button>百度一下</button>
+			</div>
+
+			<div class="news-box">
+				<div class="special-title">
+					<div>百度热榜</div>
+					<div style="color: gray;">换一换</div>
+				</div>
+
+				<div class="news">
+					<div class="news-column">
+						<div>1.特朗普将禁止TikTok在美国运营</div>
+						<div>2.加称美国引渡孟晚舟要求已满足</div>
+						<div>3.大连体育老师设计核酸检测函数表</div>
+					</div>
+
+					<div class="news-column">
+						<div>4.渡边杏东出昌大离婚</div>
+						<div>5.公交司机买500个哆啦A梦装扮车厢</div>
+						<div>6.直击2020ChinaJoy</div>
+					</div>
+				</div>
+			</div>
+		</main>
+
+<!-- ********************脚注******************** -->
+		<footer>
+			<div>
+				<span class="footer-left">
+					<a href="www.baidu.com">设为首页</a>
+					<a href="www.baidu.com">关于百度</a>
+					<a href="www.baidu.com">About Baidu</a>
+					<a href="www.baidu.com">百度营销</a>
+					<a href="www.baidu.com">使用百度前必读</a>
+					<a href="www.baidu.com">意见反馈</a>
+					<a href="www.baidu.com">帮助中心</a>
+				</span>
+				<span class="footer-right">
+					<a href="www.baidu.com">©2020 Baidu</a>
+					<a href="www.baidu.com">(京)-经营性-2017-0020</a>
+					<a href="www.baidu.com">京公网安备11000002000001号</a>
+					<a href="www.baidu.com">京ICP证030173号</a>
+				</span>
+			</div>
+		</footer>
+
+<!-- ********************浮动的二维码******************** -->
+		<div class="qrcode">
+			<img src="./qrcode.png" alt="二维码">
+		</div>
+	</body>
+</html>
