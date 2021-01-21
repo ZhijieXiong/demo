@@ -3,7 +3,7 @@ import React from "react";
 class Receipt extends React.Component {
   renderItem(item, index) {
     return (
-    <div className="receipt-item" key={index}> {/* key也可以用item.name */}
+    <div className="receipt-item" key={item.name}> {/* key也可以用item.name */}
       <div className="receipt-text">
         {item.productName} x {item.count}
       </div>
