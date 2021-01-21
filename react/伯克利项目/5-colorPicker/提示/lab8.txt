@@ -1,0 +1,77 @@
+然后您将使用网络请求来更改教室前面的灯泡的颜色！
+
+＃目标
+
+您的目标是构建一个具有三个输入的颜色选择器，分别用于红色，绿色和蓝色（颜色将表示为0-255之间的RGB颜色值）。
+
+您将渲染一个预览框，其中显示了您选择的当前颜色，并在其下方显示了“发送”按钮。
+
+单击“发送”后，您将发送一个“请求”（我们将在下面进行解释），它将教室前部的灯更改为您选择的颜色。 💡
+
+lab7-1.png
+
+＃我们的拾色器入门
+
+在本实验中，我们将没有太多的入门代码-我们正在使用的UI元素并不多，因为重点将放在网络请求上。
+
+下载hwb8.zip
+
+您的所有工作都将在App组件内的App.js文件中。
+
+＃第1部分：呈现输入
+
+首先呈现红色，绿色和蓝色的三个输入。如果您想使用语义UI呈现输入，请在此处查看示例代码：
+
+[Input | Semantic UI](https://semantic-ui.com/elements/input.html#labeled)
+
+将这些输入连接到事件处理程序，这些事件处理程序将更新用户输入的红色，绿色和蓝色值的状态属性。
+
+在继续之前，请在React DevTools中验证您的输入正在使用正确的值更新状态。
+
+＃第2部分：预览颜色
+
+要预览颜色，可以渲染一个空的<div>元素，其中包含以下这些属性：
+
+    <div
+      style={{
+        width: "100px",
+        height: "100px",
+        backgroundColor: // 您的代码在这里
+      }}
+    />
+
+传入的style的width和height属性指定一个100px的正方形框。您的工作将是使用状态值填写`backgroundColor`。它应该是如下格式的字符串：
+
+    "rgb(100, 200, 0)" // for red = 100, green = 200, blue = 0
+
+⚠️ 在此不要使用固定的数。使用您的状态的值。
+
+在继续之前，请验证在颜色输入中键入值会更新预览框。
+
+＃第3部分：发送颜色
+
+最后，我们将发出网络请求以将您的颜色发送到灯光。首先，在您的应用中添加一个标记为“发送”的按钮。以下是语义UI中的一些按钮示例：
+
+[按钮|语义UI]（https://semantic-ui.com/elements/button.html）
+
+接下来，在新按钮上添加一个onClick处理程序，该处理程序将网络请求发送到以下URL：
+
+    "https://lights-proxy.glitch.me/?color=YOURCOLORHERE"
+
+将网址中的`YOURCOLORHERE`替换为状态存储的颜色的十六进制表示。您可以使用此函数（从[Stack Overflow]（https://stackoverflow.com/questions/5623838/rgb-to-hex-and-hex-to-rgb）中）得到颜色的十六进制字符串：
+
+    //这可以在文件顶部的import下定义
+
+    function rgbToHex(r, g, b) {
+    		function componentToHex(c) {
+    		    let hex = c.toString(16);
+    		    return hex.length == 1 ? "0" + hex : hex;
+    		}
+        return componentToHex(r) + componentToHex(g) + componentToHex(b);
+    }
+
+您应将响应解析为纯文本，并记录字符串以验证颜色更改是否已成功发送！
+
+如果您得到了返回字符串`恭喜！您已经触发了color_change事件`，您会看到教室前面的灯泡变成了您的颜色（我们没有灯泡。所以你暂时看不到）。
+
+请提交代码的Github URL

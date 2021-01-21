@@ -1,0 +1,102 @@
+.App {
+  font-family: sans-serif;
+  text-align: center;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+body {
+  height: 100vh;
+  background: #fafafa; /* fallback for old browsers */
+}
+
+.list-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  background: white;
+  border-top: 12px solid #2f3b79;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+  transition: 0.3s;
+  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
+}
+
+.list-container:hover {
+  transform: translate(-50%, calc(-50% - 5px));
+  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.05);
+}
+
+.input-container {
+  display: flex;
+}
+
+.list-input {
+  position: relative;
+  width: 70%;
+  padding: 12px;
+  color: #303030;
+  font-size: 1.2em;
+  border: 0.5px solid #f3f3f3;
+  transition: 0.3s;
+}
+
+.list-input:focus {
+  background: #fafafa;
+}
+
+.list-submit {
+  position: relative;
+  width: 20%;
+  padding: 8px;
+  font-size: 1.2em;
+  flex-grow: 1;
+  color: #5d5d5d;
+  transition: 0.3s;
+}
+
+::placeholder {
+  color: #bdbdbd;
+}
+
+input:focus,
+button:focus {
+  outline: none;
+}
+
+.list-submit:hover {
+  color: white;
+  background-color: #2f3b79;
+}
+
+.item-list {
+  list-style-type: none;
+  margin: 24px;
+  font-size: 1.2em;
+  color: #5d5d5d;
+  padding: 0;
+}
+
+.item-list li {
+  padding: 12px 0;
+  cursor: pointer;
+}
+
+.item-list .done {
+  text-decoration: line-through;
+}

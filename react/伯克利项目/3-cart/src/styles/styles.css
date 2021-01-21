@@ -1,0 +1,26 @@
+.App {
+    font-family: sans-serif;
+    text-align: center;
+    padding: 20px;
+}
+
+.page-content {
+    /* width: 800px; */
+    margin: 10px auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    /* flex-wrap: wrap; */
+}
+
+.ui.cards {
+    margin-top: 10px;
+    width: 500px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.ui.cards > .card {
+    width: 200px;
+}
+  

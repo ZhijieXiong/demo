@@ -1,0 +1,455 @@
+# 介绍
+
+欢迎来到本周的实验室！ @
+
+本实验介绍props，以及如何将props从一个组件传递到另一个组件，以便在所需位置呈现正确的信息。今天，我们将在实际的Twitter tweet上创建具有许多相同属性的Tweet Card组件。
+
+# 准备
+
+请在Chrome网上应用店中安装Chrome扩展程序“ React Developer Tools”：
+
+[React开发人员工具]（https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi?hl=zh-CN）
+
+＃ Twitter介绍
+
+> Twitter是美国的在线新闻和社交网络服务，用户可以在其上发布称为“tweets”的消息并与之交互。类似我国的新浪微博。
+
+一个Tweet仅由280个字符组成，是可以创建的最基本的组件，其组成如下：
+
+- 用户“推文”的文本内容
+- 用户头像
+- 有关Tweet受欢迎程度的一些统计信息（喜欢和转发）
+
+今天，我们将构建类似于以下所示的TweetCard组件。
+
+lab4-1.png
+
+尽管结构简单，但实际上我们可以将一条推文分解为许多单独的部分。让我们看一个例子：
+
+在创建任何组件之前，一个良好的开始就是将我们的设计分成较小的部分。一种流行的方法是在每个部分周围绘制矩形，如果希望在当前组件中使用更小的组件，则可能会绘制更多的矩形。
+
+划分推文有很多可能性。以下是几个示例：
+
+lab4-2.png
+
+页面上的每个HTML元素均以绿色概述-表示诸如<div>和<h1>和<p>之类的东西！
+
+lab4-3.png
+
+一种按组件对这些元素进行分组的方法 - 它们代表诸如<ProfileHeader>和<EngagementCounter>之类的东西，我们将最终编写它们。
+
+这个过程就像在地图上放大一样：我们从北美开始，然后再放大，我们将看到组成北美的国家，然后是州，县，城市，最后是一栋栋特定的建筑物。
+
+# 总览
+
+本实验分为四个不同部分，分别按上述顺序显示在上图中：
+
+1. Header 标头（Avatar 头像，名称，用户名，已验证图标）
+2. Body 正文（推文，时间戳）
+3. Stats 统计/ Numbers 数字（Retweets 转推，Likes 点赞）
+4. Summary 摘要（使用与＃3相同的特征）
+
+这四个组件中的每一个都有我们可以传入并稍后在渲染该组件时使用的功能或props。
+
+# 文件
+
+下载 hwb4.zip，
+
+让我们对zip中的文件进行简要介绍。我们只需要修改一个文件，即TweetCard.jsx中的TweetCard组件。 TweetCard组件由上述四个部分组成。
+
+除此组件外，还有一个较小的组件：图标（Icom）。您可以在（`Icon.jsx`）中访问此Icon组件。
+
+最后，打开“ index.js”，我们应该看到已经定义了一个常量“tweet”对象。
+
+    const tweet = {
+      name: "Ken Chen",
+      username: "@kennethyChennethy",
+      imageURL:
+        "https://raw.githubusercontent.com/Ashwinvalento/cartoon-avatar/master/lib/images/male/45.png",
+      tweet:
+        "For 2019, I hope that I can finally build the perfect sandwich. #HappyNewYear #2019",
+      timestamp: "12:01 AM - 1 Jan 2019",
+      retweets: 5429,
+      likes: 1872,
+      verified: true
+    };
+
+我们可以将这个常量视为请求一个Tweet的“API调用”的结果。这些信息将作为props传递给我们的组件。
+
+- 问题：我们如何在“TweetCard.jsx”中访问用户名？
+
+        props.tweet.name // -> Should be "Ken Chen"
+
+    请记住，由于tweet是在`index.js`中定义的，因此您不能仅调用`tweet.name`来访问另一个文件中的名称。
+
+    这是props进来的地方！我们在TweetCard组件中传递了一个tweet props，因此我们可以在我们的`tweetcard.jsx`文件中访问该tweet和该tweet的所有字段。
+
+好了，现在我们对如何设计此TweetCard有了一个大致的了解，让我们开始吧！
+
+# 🙆‍♂️ 任务1：Header 标题
+
+- 复习：[React Docs]中的props介绍（https://reactjs.org/docs/components-and-props.html）
+
+    当React看到一个代表用户定义组件的元素时，它将JSX属性作为单个对象传递给该组件。我们将此对象称为“props”。
+
+    例如，以下代码在页面上呈现“Hello，Sara”：
+
+        function Welcome(props) {
+          return (
+        		<div>
+        			<h1>Hello, {props.name}</h1>
+        		</div>
+        	);
+        }
+
+        const element = (
+        	<Welcome name="Sara" />
+        )
+        ReactDOM.render(
+          element,
+          document.getElementById('root')
+        );
+
+    请记住，JSX包含JavaScript语言的全部功能，因此我们可以在React组件中包含逻辑。
+
+    下面是显示一个人生日及姓名的示例：
+
+        function Welcome(props) {
+        	const dayInMs = 24 * 60 * 60 * 1000;
+        	let daysUntilBirthday = Math.round(
+        		Math.abs((props.birthday - Date.now()) / dayInMs)
+        	);
+
+          return (
+        		<div>
+        			<h1>Hello, {props.name}</h1>
+        			<p>
+        				Your birthday is in {daysUntilBirthday}
+        				day{daysUntilBirthday === 1 ? "" : "s"}!
+        			</p>
+        		</div>
+        	);
+        }
+
+        const currentYear = new Date().getUTCFullYear();
+        const element = (
+        	<Welcome
+        		name="Sara" // 我们可以用空格或换行符分隔多个props
+        		birthday={new Date(currentYear, 10, 4)}
+        	/>
+        )
+        ReactDOM.render(
+          element,
+          document.getElementById('root')
+        );
+
+我们的Header标题是我们推文的简介。它应该显示作者是谁。我们在标题部分要做的是渲染信息，例如作者的姓名，用户名，头像和验证图标。
+
+1. 首先，打开`TweetCard.jsx`文件。我们的目标是在`renderHeader`函数中返回Header的元素。
+
+2. 让我们使用props传入的tweet常量，作为Header的内容。请记住访问特定信息（例如名称，用户名等）的正确语法。也请记住使用花括号！ （请查看上面的“ Props Review Review Toggle”，以了解如何将props传递到组件中。）
+    - 注意
+
+        您可以从技术上为props命名，无论您想要什么（我们都可以将tweet重命名为`unicorn`或其他名称）。
+
+        例 <Component unicorn={ /* 一些值 */} />
+            // 从Component作为props.unicorn访问
+
+3. 我们可以使用`props.tweet.PROPNAME`访问我们的props。
+
+有三个任务要做：
+
+    1.使用props访问img src的头像链接。回顾一下我们在index.js中所做的工作以及作为props传递到TweetCard组件中的tweet常量。
+
+    2.在<h3>标记中呈现名称，在子文本div中呈现用户名。
+
+    3.渲染验证图标。
+
+    这是一个新概念。当我们使用“verified” props时，我们应该注意，verified 为布尔型。我们在这里要做的是在render外定义一个函数（`renderVerified`），仅当 verified props为true时才渲染验证图标。请记住，我们可以在文件中的任何位置调用props。
+
+    您会注意到我们有一个Icon组件（`Icon.jsx`），我们将使用它来渲染经过验证的图标。看一下这个文件，看看我们应该如何为传递给Icon组件的prop命名，它的作用以及所有选项（应该有三个）？
+
+4. 确保在文件底部的“TweetCard”的返回语句中调用“renderHeader”，以使其显示。
+
+任务1已完成！我们应该看到一个不错的标头与Follow（跟随）按钮。
+
+到目前为止，您的TweetCard应该是这样的
+
+lab4-4.png
+
+# 💪 任务2：正文
+
+标头完成后，就该渲染推文的主体了。正文部分包含两部分：推文的文本和推文的时间戳。
+
+看看代码的注释，开始工作。
+
+任务2完成后，我们的屏幕应类似于以下内容：
+
+lab4-5.png
+
+# 🔢 任务3：数字
+
+此任务也与上面的两个任务相似。 “数字”部分包含两个部分：转推和点赞。在本节中，请在数字div内添加适当的代码。
+
+    <div className="numbers">
+    	{/ Your code here /}
+    </div>
+
+在编写本节的代码时，请将所有props放在`<h3>`标记中，并在子文本div中将诸如“retweets”或“likes”之类的字符串放入。您应该在`.numbers` div元素内部添加其中两个，一个用于点赞，另一个用于RT（转发）！
+
+    <h3>
+    	/ number of likes/rts /
+    </h3>
+    <div className="subtext">
+    	/ "likes" || "retweets" /
+    </div>
+
+# 📝 任务4：摘要
+
+呈现推文摘要部分，其中，在推文和喜欢的图标旁边分别显示转发和喜欢的次数的信息。使用`ICON_URL`常量查找可能传递给我们的Icon组件的可能值，以后可通过`props.type`进行访问。
+
+请注意，尽管我们将使用转发和点赞数字，但显示的信息会四舍五入至最接近的千位（如果适用）（5234→“5.2K”，52→“52”）。
+
+# 🎉 检查点：TweetCard
+
+这是我们的TweetCard最终结果的图片。完成单个TweetCard组件后，我们可以轻松地在另一个项目中重用此组件的此部分/部分，例如创建Twitter新闻提要。
+
+lab4-6.png
+
+# 第2部分
+
+本周的作业是从构建一个简单的组件以呈现Tweet来的。这次，我们将了解为什么编写组件会有所帮助-您将构建一个显示多个Tweet的小型Twitter客户端，而不是仅显示一个Tweet。
+
+# 📔 规划我们的Twitter客户
+
+在编写任何代码之前，让我们首先将Twitter客户端分解为可重复使用的部分。这是我们在本作业中要实现的目标：
+
+lab4-7.png
+
+粉色框表示可重复使用的组件：Tweets列表中的“Tweet行”！
+
+由于每个推文均以相同的行显示，因此我们可以将其用作第一个组件“`TweetRow`”的基础。
+
+您可能会注意到，我们的`TweetRow`与我们先前在实验室中构建的`TweetCard`有一些相似之处。这些相似之处包括顶部的头像/用户名标头和底部的转发/赞数。
+
+虽然我们可以从上周的组件中复制“renderHeader”和“renderSummary”中的JSX，但我们也可以使用模块化，并在Tweet行和卡片中复用“header”和“summary”组件。这是为什么在这里重用才有意义的直观表示：
+
+我们的Tweet列表界面最终看起来像：
+
+lab4-8.png
+
+我们已经写过卡片组件：
+
+lab4-9.png
+
+-橙色代表“header”，我们将根据这些共享元素创建一个“ProfileHeader”组件
+-蓝色代表“summary”，即“EngagementCounter”组件
+
+最后，我们将编写三个新组件：
+
+-`TweetRow`：我们前面编写的`TweetCard`组件的精简版，有更紧凑的形式。它将包括：
+
+1）`ProfileHeader`：我们将从`TweetCard`中拉出个人资料图片和用户名元素，以在TweetRow和卡之间共享。
+
+2）`EngagementCounter`：我们将从`TweetCard`中拉出转推和喜欢的计数器元素，也在TweetRow和卡之间共享。
+
+快速检查：在继续之前，请确保您知道我们下面的计划是什么。请回答：
+
+1.我们已经在哪个组件中编写了ProfileProfileer和EngagementCounter的JSX代码？该组件的代码在哪里？
+
+    我们已经在`TweetCard`中编写了这些组件的代码！它位于`tweetcard.jsx`中。
+
+2.为什么我们要将此代码移至“ ProfileHeader”和“ EngagementCounter”中？
+
+    我们要在TweetCard和TweetRow中使用由ProfileHeader和EngagementCounter表示的相同元素。将它们移动到它们自己的组件中，使我们可以轻松地同时使用它们。
+
+# 🤝 在文件之间共享代码
+
+为了在我们的`TweetCard`和`TweetRow`之间重复使用代码，我们必须首先了解一下在JavaScript中导入和导出模块的方法。
+
+到目前为止，我们的工作仅由一个包含所有代码的文件组成，但现在我们将开始使用许多文件进行实验。我们如何用JavaScript做到这一点？
+
+## 导入和导出（Imports and Exports）
+
+您可能会在使用TweetCard时注意到，有一个使用ReactDOM.render的index.js文件。如果您还没有的话，现在看一下src/index.js，注意一下这一行的用法：
+
+    import TweetCard from "./TweetCard.jsx";
+
+    // ... 省略 ...
+
+    ReactDOM.render(<TweetCard tweet={tweet} />, rootElement);
+
+通过导入`TweetCard.jsx`文件的内容，我们可以直接在`index.js`内部使用它并呈现其组件。
+
+另一方面，在`TweetCard.jsx`中，我们有一个`export`语句来启用此功能：
+
+    const TweetCard = props => {
+    	// ... 省略 ...
+    };
+
+    export default TweetCard;
+
+在本课程的后面，我们将更深入地了解“default（默认）”导出的含义，但是现在，您可以将其视为将不同的JavaScript文件连接在一起的一种方式。通过导出返回JSX的`TweetCard`函数，我们可以将其导入`index.js`内部，并使用尖括号（`<>`）进行渲染。
+
+## 分解
+
+既然您已经看到了JavaScript导入和导出的示例，请自己尝试！
+
+请记住，我们要在`TweetRow`（我们将很快创建）和`TweetCard`（您已经编写）中重用的两个组件是：
+
+-`ProfileHeader`（个人资料图片和用户名元素）–将其从`renderHeader`中移出到名为`src/ProfileHeader.jsx`的新文件中
+-`EngagementCounter`（转发和类似计数器元素）–将其从`renderSummary`中移到名为`src/EngagementCounter.jsx`的新文件中
+
+注意：在`renderHeader`和`renderSummary`中，您可能已使用`props.tweet`，因为它在`TweetCard`中可用。现在情况变了。现在应该接受Tweet对象的特定字段/键作为新组件的props。
+
+- 示例：使用`props.name`代替`renderHeader`中的`props.tweet.name`。您现在需要将`name`专门传递给`ProfileHeader`。
+
+创建这些文件，并传递进去适当的props后，不要忘记在`src/TweetCard.jsx`中设置导入（import）。
+
+⚠️ 在继续之前，请确保您的`TweetCard`在新的模块化组件中仍能正常工作。
+
+# 🛠 放在一起
+
+lab4-10.png
+
+您正在构建的`TweetRow`组件的一个示例
+
+接下来，您将创建`TweetRow`组件。您的TweetRow将包括三部分：标题，文本（可以在<p>元素内部呈现）和摘要。我们将使用`ProfileHeader`组件作为标题，并使用`EngagementCounter`来显示转发和点赞。推文的文本可以直接render（呈现），无需将其传递到组件中。
+
+您的`TweetRow`应该接受`tweet`props，该props的结构类似于我们传递给`TweetCard`的对象：
+    {
+      name: "...",
+      username: "...",
+      imageURL: "..."
+      tweet: "..."
+      timestamp: "...",
+      retweets: 0,
+      likes: 0,
+      verified: true
+    }
+
+提示：在返回的TweetRow周围添加一个div，把它的className属性设为tweet__row（两个下划线），这样就能在每个Tweet之间留出一定的空间。
+
+## 如何测试新行
+
+为了测试您的`TweetRow`组件是否正常工作，请临时更改`index.js`文件以呈现`TweetRow`而不是`TweetCard`。
+
+在下一节中，我们将其改为行列表。我们将在本作业的最后部分重新访问“TweetCard”，让有人单击某行时显示带有Tweet的弹出窗口。
+
+## 创建推文列表
+
+让我们先以我们预期的方式使用我们的`TweetRow`- 在列表视图中！
+
+为此，我们将从可用于测试的一系列Tweet数据开始（将下面的代码粘贴到您的代码中）。
+
+- 测试推文数据
+
+    您可以将下面的变量临时放在您的`index.js`文件中。
+
+        const tweets = [
+          {
+            "name": "Kevin Ghadyani",
+            "username": "Sawtaytoes",
+            "imageURL": "https://twitter-scraper.now.sh/image/Sawtaytoes/?size=bigger",
+            "retweets": 0,
+            "likes": 0,
+            "tweet": "One of these two observables will cause a bug in your application. Which do you think it is and why?\n#RxJS #JavaScript ",
+            "timestamp": "2019-03-05T07:18:27.000Z"
+          },
+          {
+            "name": "Coding",
+            "username": "Coding_Fan",
+            "imageURL": "https://twitter-scraper.now.sh/image/Coding_Fan/?size=bigger",
+            "retweets": 3,
+            "likes": 1,
+            "tweet": "Writing Clean Asynchronous Code In Node.js\n\n☞ http://bit.ly/2JTkWVR \n\n#nodejs #javascript ",
+            "timestamp": "2019-03-05T06:31:15.000Z"
+          },
+          {
+            "name": "Tutorial Developer",
+            "username": "tutorial_dev",
+            "imageURL": "https://twitter-scraper.now.sh/image/tutorial_dev/?size=bigger",
+            "retweets": 2,
+            "likes": 1,
+            "tweet": "Webpack 2: The Complete Developer’s Guide\n\n☞ http://bit.ly/2QruTAH \n\n#angular #javascript ",
+            "timestamp": "2019-03-05T05:22:16.000Z"
+          },
+          {
+            "name": "Maulik",
+            "username": "fraindz",
+            "imageURL": "https://twitter-scraper.now.sh/image/fraindz/?size=bigger",
+            "retweets": 8,
+            "likes": 10,
+            "tweet": "A cool way to remove property from object without mutating it.\n\nvar o = { a:1, b:2, x:3 }\nvar { b, ...otherProps } = o;\n\nThis returns a copy of object `o` without the property `b`\n#100DaysOfCode #javascript ",
+            "timestamp": "2019-03-05T04:51:16.000Z"
+          },
+          {
+            "name": "jQuery",
+            "username": "jquery_dv",
+            "imageURL": "https://twitter-scraper.now.sh/image/jquery_dv/?size=bigger",
+            "retweets": 0,
+            "likes": 2,
+            "tweet": "The Comprehensive Guide to JavaScript Design Patterns\nhttps://ift.tt/2NH5XQL \n#javascript #js https://ift.tt/2He61Gx ",
+            "timestamp": "2019-03-05T04:07:15.000Z"
+          }
+        ]
+
+对该“tweets”变量做Map操作，使用适当的prop渲染“TweetRows”。
+
+# 🔆 向网络请求真实推文
+
+要将真实的Tweets放入新的`TweetRow`列表中，您将使用我们为您构建的名为“withTweets”的“高阶组件”。高阶组件（HOC）是一种组件，它包装其他组件以为React应用程序提供共享逻辑，而不是共享元素。
+
+### 关于`withTweets`
+
+我们的HOC“ withTweets”为您的组件提供以下props：
+
+-`tweets`- 对象的数组，结构类似于我们之前提供的测试数据
+-`setTweets` — 一个函数，它接受单个字符串参数（Tweets的搜索项），不返回任何内容。这个函数向Twitter查询您的搜索词，并将在上述`tweets`数组中提供相关的tweets。
+-`onSelectTweet`- 一个带有单个tweet参数的函数。我们将在下一节中进一步讨论此功能。
+
+### 设置`withTweets`
+
+首先，在index.js中设置一个App组件，该组件将包裹您映射的TweetRow。这将是一个空白函数组件，看起来像：
+
+    function App(props) {
+    	return (
+    		<div className="App">
+    			/ your TweetRows, mapped here /
+    		</div>
+    	);
+    }
+
+接下来，要设置“withTweets”，请使用“withTweets”函数，包裹您的“App”组件。
+
+    const AppWithTweets = withTweets(App);
+
+然后，在`ReactDOM.render`中渲染`AppWithTweets`（替换Mapped的`TweetRow`组件，或其中的任何组件）。
+
+### 你的目标
+
+要使用`withTweets`，请在您的App组件内设置一个输入文本框，当输入更改时，调用setTweets（在props中接收）。这意味着当您键入输入内容时，新的Tweets应该立即加载。
+
+确保您使用的是从App的props收到的`tweets`数组，而不是测试数据，用于Map功能。
+
+# 🔌 将您的清单与您的卡片联系起来
+
+分配的最后一部分将涉及创建一个模式，以在TweetRow中显示所选tweet的TweetCard。
+
+当您单击TweetRow时，应该会显示TweetCard组件！
+
+## 出示您的TweetCard
+
+为了允许您的Twitter客户端显示每个Tweet的完整视图，我们将使用前面提到的withwithTweets传递给我们的onSelectTweet函数props。
+
+onSelectTweet函数接受一个参数：一个代表Tweet的对象（props.tweets中的一项）。它将为您处理模式显示！
+
+您的目标是在每个TweetRow的<div>元素上设置一个单击事件处理函数，该事件调用onSelectTweet，传递正确的Tweet对象。
+
+请记住：onSelectTweet不会自动传递给单个TweetRow组件，它仅仅立即传递给您的App组件（通过withTweets）。您然后可以将props传递到“TweetRow”中！
+
+一旦你单击Tweets，就弹出带有正确的Tweet信息的组件，您就已经完成了本部分。
+
+## 你做到了！
+
+我们希望这是您进入React第一步的有趣且实用的练习。展望未来，我们将以这些模式为基础，通过更多交互来完成更复杂的用户界面。

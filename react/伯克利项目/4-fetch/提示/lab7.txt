@@ -1,0 +1,78 @@
+## 介绍
+
+今天，我们将要讨论网络请求，这是任何Web应用程序的核心部分。网络请求可帮助我们的网页从外界获得数据，您将在最终项目中全部使用它！
+
+我们将首先回顾一些React基础知识，
+
+# 背景：关于网络请求
+
+一般来说，网络请求是您的计算机通过Internet与另一台计算机通信。这可能包括下载图像，上传文档或向朋友发送消息。
+
+我们在以前的实验中使用过网络请求（还记得TweetList中的Tweets请求吗？）。
+
+要开始处理网络请求，请打开Chrome DevTools（检查元素），然后打开“控制台”选项卡。
+
+下面我们来实验一下
+
+## 使用`fetch`发出请求
+
+我们在JavaScript中发送网络请求的内置函数是“fetch”。
+
+fetch有两个参数...
+
+- 请求的网址
+- 一个可选参数，用于设置请求的一些信息
+
+它会返回一个名为“Promise”的对象。稍后我们将更详细地介绍Promises，但现在，让我们尝试请求一个Kanye West网站提供的开放API
+
+    await fetch("https://api.kanye.rest")
+
+- 等一下，什么是“await”？
+
+    “ await”的意思是，我们调用fetch之后，不会立即返回结果。它们只会返回一个`Promise`的对象。
+
+    因为“fetch”是一个不会立即返回结果的函数（我们必须等待服务器从网络送回来的响应结果），所以我们需要“等待”该函数。
+
+短暂的延迟后，您应该看到一个`Response`对象，其中包含请求成功的一些信息。
+
+“ Response”对象本身并不显示响应的“内容”是什么，但是我们可以使用浏览器内置的函数来告诉我们
+
+（更多信息，请参见 Response (https://developer.mozilla.org/en-US/docs/Web/API/Response)
+
+首先让我们使用“Response”的“ .text（）”函数，得到该请求返回的字符串。
+
+请记住，我们仍在使用控制台执行这些命令
+
+就像前面一样，我们将通过提取发送网络请求。但是这次，我们将响应对象存储在一个名为“ response”的变量中。
+
+    let response = await fetch("https://api.kanye.rest")
+
+现在，我们将使用`response`来读取Kanye West Quotes API返回的内容。这些内容是一个字符串：
+
+    let responseText = await response.text()
+
+注意，就像我们执行`fetch`一样，我们`await` .text（）`函数！这适用于所有用于读取和解析请求响应内容的“ Response”选项。
+
+现在在控制台中输入`responseText`以查看内容-您应该会看到Kanye West的这句话。
+
+## Kanye + React = ❤️
+
+让我们看看这在React内部是什么样子！
+
+我们将构建一个简单的页面来请求并显示Kanye的内容。下载入门代码 hwb7.zip
+
+所有的UI元素都已经为您设置好了-您只需填写事件处理程序“ handleClick”，完成下面三件事（在代码的注释中已经列出了）：
+
+1.像上面一样，向Kanye West API发送请求。存储返回的“响应”对象！
+
+2.使用“ Response”的内置函数之一，以JavaScript对象（而不是纯字符串）的形式获取响应的内容。我们想要一个对象，因为响应采用JSON（JavaScript对象表示法）格式，如
+
+        {"quote":"distraction is the enemy of vision","id":"drhUGZmNYueLuOfwvdON"}
+
+    我们想使用其中的`quote`属性，因此，请使用[这些功能]（https://developer.mozilla.org/zh-CN/docs/Web/API/Response#Methods）中的一种方法（注意不是` .text（）`来解析JSON响应，然后将已解析的JavaScript对象存储在一个变量中。
+
+3.使用此对象来更新“ this.state.quote”，该对象将显示在屏幕上。如下图所示
+
+lab7-2.png
+
+请提交Github URL
